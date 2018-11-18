@@ -1,11 +1,19 @@
 from openpyxl import *
 from tkinter import *
-  
+from sqlalchemy import *
+
 # globally declare wb and sheet variable 
   
 # opening the existing excel file 
-wb = load_workbook('./data/excel.xlsx') 
-  
+try:
+    wb = load_workbook('./data/excel.xlsx')
+except:
+    wb = Workbook()
+    wb.save('./data/excel.xlsx')
+    
+# Open a database connection
+connection = create_engine('mysql://facialuser:#Password1@localhost/facial')
+
 # create the sheet object 
 sheet = wb.active 
   
@@ -119,7 +127,7 @@ def insert():
         sheet.cell(row=current_row + 1, column=7).value = address_field.get() 
   
         # save the file 
-        wb.save('/home/pi/excel.xlsx') 
+        wb.save('./data/excel.xlsx') 
   
         # set focus on the name_field box 
         name_field.focus_set() 
