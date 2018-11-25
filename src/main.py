@@ -1,8 +1,10 @@
 from tkinter import *
-import App
+from App import App
+from WBDatabase import Database
 def main():
     tk = Tk()
-    app = App(tk)
+    database = Database()
+    app = App(tk, database)
     
 
 if __name__ == '__main__':
