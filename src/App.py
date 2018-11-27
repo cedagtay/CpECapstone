@@ -50,7 +50,7 @@ class App():
         email_id_field.delete(0, END) 
         address_field.delete(0, END) 
 
-    def __init__(self, root, database):
+    def __init__(self, root, database, facerecog):
         root.title("Registration Form")
         root.geometry("500x300") 
         
@@ -124,8 +124,9 @@ class App():
                address == ""): 
                 print("empty input")
             else:
+                dir_name = facerecog.capture(name)
                 database.insert_data(name, course, sem, form_no,
-                                 contact_no, email_id, address)
+                                     contact_no, email_id, address, dir_name)
                 name_field.delete(0, END) 
                 course_field.delete(0, END) 
                 sem_field.delete(0, END) 
