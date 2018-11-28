@@ -17,7 +17,6 @@ class Database():
             sheet.column_dimensions['F'].width = 20
             sheet.column_dimensions['G'].width = 40
             sheet.column_dimensions['H'].width = 50
-            sheet.column_dimensions['I'].width = 50
             
             # write given data to an excel spreadsheet 
             # at particular location 
@@ -29,10 +28,9 @@ class Database():
             sheet.cell(row=1, column=6).value = "Contact Number"
             sheet.cell(row=1, column=7).value = "Email id"
             sheet.cell(row=1, column=8).value = "Address"
-            sheet.cell(row=1, column=9).value = "Data Dir"
             self.wb.save('./data/excel.xlsx')
             
-    def insert_data(self, name, course, sem, form_no, contact_no, email_id, address, data_dir):
+    def insert_data(self, name, course, sem, form_no, contact_no, email_id, address):
         sheet = self.wb.active
         current_row = sheet.max_row
         sheet.cell(row=current_row + 1, column=1).value = current_row
@@ -43,6 +41,16 @@ class Database():
         sheet.cell(row=current_row + 1, column=6).value = contact_no 
         sheet.cell(row=current_row + 1, column=7).value = email_id
         sheet.cell(row=current_row + 1, column=8).value = address
-        sheet.cell(row=current_row + 1, column=9).value = data_dir
         self.wb.save('./data/excel.xlsx')
-        
+        print(current_row)
+        return current_row
+
+    def retrieve_names(self):
+        sheet = self.wb.active
+        name_array = []
+        max_row = sheet.max_row
+        for i in range(2, max_row+1):
+            cell = "B" + str(i)
+            name_array.append(sheet[cell].value)
+
+        return name_array

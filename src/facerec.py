@@ -8,7 +8,7 @@ import datetime
 
 recognizer = cv2.face.LBPHFaceRecognizer_create()
 recognizer.read('opencv_data/trainer/trainer.yml')
-cascadePath = "opencv_data/haarcascade_frontalface_default.xml"
+cascadePath = "opencv_data/haarcascade/haarcascade_frontalface_alt.xml"
 faceCascade = cv2.CascadeClassifier(cascadePath);
 
 font = cv2.FONT_HERSHEY_SIMPLEX

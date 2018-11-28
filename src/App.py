@@ -51,6 +51,7 @@ class App():
         address_field.delete(0, END) 
 
     def __init__(self, root, database, facerecog):
+        
         root.title("Registration Form")
         root.geometry("500x300") 
         
@@ -124,23 +125,31 @@ class App():
                address == ""): 
                 print("empty input")
             else:
-                dir_name = facerecog.capture(name)
-                database.insert_data(name, course, sem, form_no,
-                                     contact_no, email_id, address, dir_name)
+                id = database.insert_data(name, course, sem, form_no,
+                                     contact_no, email_id, address)
                 name_field.delete(0, END) 
                 course_field.delete(0, END) 
                 sem_field.delete(0, END) 
                 form_no_field.delete(0, END) 
                 contact_no_field.delete(0, END) 
                 email_id_field.delete(0, END) 
-                address_field.delete(0, END) 
+                address_field.delete(0, END)
+                database.retrieve_names()
+                facerecog.capture(name, id)
 
+        def recognize():
+            names = database.retrieve_names()
+            user_id = facerecog.recognize(names)
+            print(names[user_id])
                 
         # create a Submit Button and place into the root window 
         submit = Button(root, text="Register", fg="Black", 
                         bg="White", command=submit) 
         submit.grid(row=8, column=1)
-        
+
+        login = Button(root, text="Login", fg="Black",
+                       bg="White", command=recognize)
+        login.grid(row=8, column=2)
         # start the GUI 
         root.mainloop() 
         
