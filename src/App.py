@@ -1,43 +1,7 @@
 from tkinter import *
 from sqlalchemy import *
 
-class App():
-    # Function to set focus (cursor) 
-    def focus1(event): 
-        # set focus on the course_field box 
-        course_field.focus_set() 
-        
-            
-    # Function to set focus 
-    def focus2(event): 
-        # set focus on the sem_field box 
-        sem_field.focus_set() 
-                    
-                    
-    # Function to set focus 
-    def focus3(event): 
-        # set focus on the form_no_field box 
-        form_no_field.focus_set() 
-  
-  
-    # Function to set focus 
-    def focus4(event): 
-        # set focus on the contact_no_field box 
-        contact_no_field.focus_set() 
-  
-  
-    # Function to set focus
-    def focus5(event): 
-        # set focus on the email_id_field box 
-        email_id_field.focus_set() 
-  
-  
-    # Function to set focus 
-    def focus6(event): 
-        # set focus on the address_field box 
-        address_field.focus_set() 
-  
-  
+class App():  
     # Function for clearing the 
     # contents of text entry boxes 
     def clear(): 
@@ -50,7 +14,7 @@ class App():
         email_id_field.delete(0, END) 
         address_field.delete(0, END) 
 
-    def __init__(self, root, database, facerecog):
+    def __init__(self, root, database, facerecog, executor):
         
         root.title("Registration Form")
         root.geometry("500x300") 
@@ -136,11 +100,11 @@ class App():
                 address_field.delete(0, END)
                 database.retrieve_names()
                 facerecog.capture(name, id)
-
+                facerecog.train()
+                
         def recognize():
             names = database.retrieve_names()
             user_id = facerecog.recognize(names)
-            print(names[user_id])
                 
         # create a Submit Button and place into the root window 
         submit = Button(root, text="Register", fg="Black", 
