@@ -46,7 +46,6 @@ class App():
         # grid method is used for placing 
         # the widgets at respective positions 
         # in table like structure . 
-        #heading.grid(row=0, column=1) 
         name_label.grid(row=1, column=0) 
         course_label.grid(row=2, column=0) 
         sem_label.grid(row=3, column=0) 
