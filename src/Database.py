@@ -16,10 +16,29 @@ class Database():
                      Column('email_address', String(255)),
                      Column('address', String(255))
     )
+    
     logs = Table('logs', metadata,
                  Column('id', Integer, primary_key = True),
                  Column('student_id', Integer, ForeignKey('students.id'), nullable = False),
                  Column('datetime', DateTime, nullable = False, index = True)
+    )
+    
+    subjects = Table('subjects', metadata,
+                    Column('id', Integer, primary_key = True),
+                    Column('name', String(255), nullable = False)
+    )
+    
+    rooms = Table('rooms', metadata,
+                  Column('id', Integer, primary_key = True),
+                  Column('number', String(3), nullable = False)
+    )
+    
+    room_subject = Table('room_subject', metadata,
+                         Column('id', Integer, primary_key = True),
+                         Column('room_id', Integer, ForeignKey('rooms.id'), nullable = False),
+                         Column('subject_id'), Integer, ForeignKey('subjects.id'),
+                         Column('start_time', Time, nullable = False),
+                         Column('end_time', Time, nullable = False)
     )
     
     def __init__(self, constr):
