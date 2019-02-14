@@ -26,6 +26,9 @@ et_xmlfile = "==1.0.1"
 Pillow = "==5.3.0"
 PyMySQL = "==0.9.2"
 SQLAlchemy = "==1.2.14"
+flask = "*"
+python-dotenv = "*"
+flask-sqlalchemy = "*"
 
 [requires]
 python_version = "3.7"

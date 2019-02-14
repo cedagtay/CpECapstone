@@ -36,7 +36,7 @@ class Database():
     room_subject = Table('room_subject', metadata,
                          Column('id', Integer, primary_key = True),
                          Column('room_id', Integer, ForeignKey('rooms.id'), nullable = False),
-                         Column('subject_id'), Integer, ForeignKey('subjects.id'),
+                         Column('subject_id', Integer, ForeignKey('subjects.id'), nullable = False),
                          Column('start_time', Time, nullable = False),
                          Column('end_time', Time, nullable = False)
     )
