@@ -20,7 +20,8 @@ class Database():
     logs = Table('logs', metadata,
                  Column('id', Integer, primary_key = True),
                  Column('student_id', Integer, ForeignKey('students.id'), nullable = False),
-                 Column('datetime', DateTime, nullable = False, index = True)
+                 Column('date', Date, nullable = False, index = True),
+                 Column('time', Time, nullable = False)
     )
     
     subjects = Table('subjects', metadata,
@@ -36,7 +37,7 @@ class Database():
     room_subject = Table('room_subject', metadata,
                          Column('id', Integer, primary_key = True),
                          Column('room_id', Integer, ForeignKey('rooms.id'), nullable = False),
-                         Column('subject_id'), Integer, ForeignKey('subjects.id'),
+                         Column('subject_id', Integer, ForeignKey('subjects.id')),
                          Column('start_time', Time, nullable = False),
                          Column('end_time', Time, nullable = False)
     )
@@ -72,3 +73,9 @@ class Database():
         new_log = self.logs.insert().values(student_id = student_id, datetime = datetime.now())
         conn = self.engine.connect()
         result = conn.execute(new_log)
+
+    def generate_report(self, start_date, end_date):
+        data = {"start_date":start_date,"end_date":end_date}
+        query = text("""SELECT s.name, l.date FROM students s JOIN logs as l on s.id = l.student_id WHERE date >= :start_date AND date <= :end_date GROUP BY s.name, l.date""")
+        conn = self.engine.connect()
+        return conn.execute(query, **data)

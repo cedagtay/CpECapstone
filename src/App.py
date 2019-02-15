@@ -1,5 +1,8 @@
 from tkinter import *
 from sqlalchemy import *
+import datetime as DT
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Table 
 
 class App():  
     # Function for clearing the 
@@ -104,6 +107,20 @@ class App():
         def recognize():
             names = database.retrieve_names()
             user_id = facerecog.recognize(names)
+
+        def report():
+            doc = SimpleDocTemplate("report.pdf", pagesize=letter)
+            today = DT.date.today()
+            ago = today - DT.timedelta(days=7)
+            rows = database.generate_report(today, ago)
+            data = [[1,1]]
+            elements = []
+            for row in rows:
+                data.append(row)
+            tab = Table(data)
+            elements.append(tab)
+            doc.build(elements)
+                
                 
         # create a Submit Button and place into the root window 
         submit = Button(root, text="Register", fg="Black", 
@@ -112,7 +129,13 @@ class App():
 
         login = Button(root, text="Login", fg="Black",
                        bg="White", command=recognize)
-        login.grid(row=8, column=2)
+        login.grid(row=9, column=1)
+
+        report = Button(root, text="Generate Report", fg="Black",
+                        bg="White", command=report)
+        
+        report.grid(row=9, column=2)
+        
         # start the GUI 
         root.mainloop() 
         
