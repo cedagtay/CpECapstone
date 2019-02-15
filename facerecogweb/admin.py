@@ -21,4 +21,4 @@ def schedule():
 
 @bp.route('/reports', methods=['GET', 'POST'])
 def reports():
-    return render_template('admin/report.html'):
+    return render_template('admin/report.html')
