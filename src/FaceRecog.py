@@ -25,7 +25,7 @@ class FaceRecog():
 
         while count <= 30:
             ret, img = cam.read()
-            img = cv2.flip(img, 1) # flip video image vertically
+            img = cv2.flip(img, -1) # flip video image vertically
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             faces = self.face_classifier.detectMultiScale(gray, 3, 1)
             
@@ -67,7 +67,7 @@ class FaceRecog():
         user_id = 0
         while True:
             ret, img_raw = cam.read()
-            img = cv2.flip(img_raw,1)
+            img = cv2.flip(img_raw,-1)
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             minW = 0.1*cam.get(3)
             minH = 0.1*cam.get(4)
@@ -93,7 +93,7 @@ class FaceRecog():
                     name = self.database.retrieve_name(user_id)
                     cv2.putText(img, str(name), (x+5,y-5), font, 1, (255,255,255), 2)
 
-                    if (confidence >= 70):
+                    if (confidence >= 50):
                         print(user_id)
                         self.database.insert_log(user_id)
                         

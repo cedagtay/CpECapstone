@@ -70,7 +70,8 @@ class Database():
         return result[0]
 
     def insert_log(self, student_id):
-        new_log = self.logs.insert().values(student_id = student_id, datetime = datetime.now())
+        current_dt = datetime.now()
+        new_log = self.logs.insert().values(student_id = student_id, date = current_dt.date, time = current_dt.time)
         conn = self.engine.connect()
         result = conn.execute(new_log)
 

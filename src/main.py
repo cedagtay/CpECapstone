@@ -1,7 +1,9 @@
 from tkinter import Tk
+from sqlalchemy import *
 from App import App
 from Database import Database
 from FaceRecog import FaceRecog
+from reportlab import *
 from concurrent.futures import ThreadPoolExecutor
 def main():
     tk = Tk()

@@ -113,7 +113,6 @@ class App():
             today = DT.date.today()
             ago = today - DT.timedelta(days=7)
             rows = database.generate_report(today, ago)
-            data = [[1,1]]
             elements = []
             for row in rows:
                 data.append(row)
@@ -133,8 +132,8 @@ class App():
 
         report = Button(root, text="Generate Report", fg="Black",
                         bg="White", command=report)
-        
-        report.grid(row=9, column=2)
+                
+        report.grid(row=10, column=1)
         
         # start the GUI 
         root.mainloop() 
