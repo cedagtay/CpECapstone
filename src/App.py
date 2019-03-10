@@ -1,5 +1,7 @@
 from tkinter import *
+from tkinter.messagebox import showinfo
 from sqlalchemy import *
+from itertools import groupby
 import datetime as DT
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Table 
@@ -107,16 +109,41 @@ class App():
         def recognize():
             names = database.retrieve_names()
             user_id = facerecog.recognize(names)
-
+            name = database.retrieve_name(user_id)
+            showinfo("Window", "Welcome " + name)
+            
+            
         def report():
             doc = SimpleDocTemplate("report.pdf", pagesize=letter)
             today = DT.date.today()
             ago = today - DT.timedelta(days=7)
+            daterange = [str((today - DT.timedelta(days=day))) for day in range(0,7)]
+            daterange.reverse()
             rows = database.generate_report(today, ago)
+            datas = [
+                ['Students Attendance Sheet','','','','','','','Weekly Report'],
+                [],[],
+                [' ']+daterange]
             elements = []
-            for row in rows:
-                data.append(row)
-            tab = Table(data)
+            for user, dates in groupby(rows, lambda l: l[0]):
+                data = [user]
+                date_list = list(dates)
+                date_list_length = len(date_list)
+                for day in daterange:
+                    counter = 0
+                    for date in date_list:
+                        counter+=1
+                        if day == str(date[1]):
+                            data.append('Present')
+                            counter = 0
+                            break
+                        elif counter == date_list_length:
+                            print(date[1])
+                            data.append('Absent')
+                            counter = 0
+                datas.append(data)
+            print(datas)
+            tab = Table(datas)
             elements.append(tab)
             doc.build(elements)
                 

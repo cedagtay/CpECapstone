@@ -65,6 +65,7 @@ class FaceRecog():
         cam.set(3, 640) # set video width
         cam.set(4, 480) # set video height
         user_id = 0
+        isRecognized = False
         while True:
             ret, img_raw = cam.read()
             img = cv2.flip(img_raw,-1)
@@ -96,15 +97,16 @@ class FaceRecog():
                     if (confidence >= 50):
                         print(user_id)
                         self.database.insert_log(user_id)
+                        isRecognized = True
                         
                 else:
-                    cv2.putText(img, "Unknown", (x+5,y-5), font, 1, (255,255,255), 2)
+                    cv2.putText(img, "", (x+5,y-5), font, 1, (255,255,255), 2)
                     
                 cv2.putText(img, str(confidenceStr), (x+5,y+h-5), font, 1, (255,255,0), 1)
                 
             cv2.imshow('camera', img)
             k = cv2.waitKey(10) & 0xff
-            if k == 27:
+            if k == 27 or isRecognized:
                 break
 
         cam.release()

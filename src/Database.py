@@ -71,12 +71,16 @@ class Database():
 
     def insert_log(self, student_id):
         current_dt = datetime.now()
-        new_log = self.logs.insert().values(student_id = student_id, date = current_dt.date, time = current_dt.time)
+        new_log = self.logs.insert().values(student_id = student_id, date = current_dt.date(), time = current_dt.time())
         conn = self.engine.connect()
         result = conn.execute(new_log)
 
     def generate_report(self, start_date, end_date):
         data = {"start_date":start_date,"end_date":end_date}
-        query = text("""SELECT s.name, l.date FROM students s JOIN logs as l on s.id = l.student_id WHERE date >= :start_date AND date <= :end_date GROUP BY s.name, l.date""")
+        query = select([self.students.c.name, self.logs.c.date, func.min(self.logs.c.time)]).select_from(self.students.join(self.logs)).where(and_(
+            (self.logs.c.date <= start_date),
+            (self.logs.c.date >= end_date)
+        )).group_by(self.students.c.id).group_by(self.logs.c.date)
         conn = self.engine.connect()
-        return conn.execute(query, **data)
+        result = conn.execute(query, **data)
+        return result
