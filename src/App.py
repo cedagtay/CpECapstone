@@ -146,6 +146,9 @@ class App():
             tab = Table(datas)
             elements.append(tab)
             doc.build(elements)
+
+        def train():
+            facerecog.train()
                 
                 
         # create a Submit Button and place into the root window 
@@ -161,6 +164,10 @@ class App():
                         bg="White", command=report)
                 
         report.grid(row=10, column=1)
+
+        train = Button(root, text="Train", fg="Black", bg="white", command=train)
+
+        train.grid(row=11, column=1)
         
         # start the GUI 
         root.mainloop() 

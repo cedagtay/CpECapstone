@@ -25,7 +25,7 @@ class FaceRecog():
 
         while count <= 30:
             ret, img = cam.read()
-            img = cv2.flip(img, -1) # flip video image vertically
+            img = cv2.flip(img, 1) # flip video image vertically
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             faces = self.face_classifier.detectMultiScale(gray, 3, 1)
             
@@ -40,23 +40,21 @@ class FaceRecog():
 
     def getImagesAndLabels(self, path):
         dictionary = {}
-    
+        faceSamples=[]
+        ids = []
         for folder in os.listdir(path):
             fullPath = os.path.join(path,folder)
             dictionary[folder] = [os.path.join(fullPath, image) for image in os.listdir(fullPath)]
-        
-            faceSamples=[]
-            ids = []
-    
+
         for name,imagePaths in dictionary.items():
             PIL_imgs = [Image.open(imagePath) for imagePath in imagePaths] # convert it to grayscale
             imgs_numpy = [np.array(PIL_img,'uint8') for PIL_img in PIL_imgs]
-                
+            
             for img_numpy in imgs_numpy:
                 faces = self.face_trainer.detectMultiScale(img_numpy)
                 for (x,y,w,h) in faces:
                     faceSamples.append(img_numpy[y:y+h,x:x+w])
-                    ids.append(int(folder))
+                    ids.append(int(name))
                         
         return faceSamples, ids
 
@@ -68,7 +66,7 @@ class FaceRecog():
         isRecognized = False
         while True:
             ret, img_raw = cam.read()
-            img = cv2.flip(img_raw,-1)
+            img = cv2.flip(img_raw, 1)
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             minW = 0.1*cam.get(3)
             minH = 0.1*cam.get(4)
@@ -111,9 +109,10 @@ class FaceRecog():
 
         cam.release()
         cv2.destroyAllWindows()
-        return user_id - 1
+        return user_id
                     
     def train(self):
         faces, ids = self.getImagesAndLabels(self.data_path)
+        print(ids)
         self.recognizer.train(faces, np.array(ids))
         self.recognizer.write(self.trainer_file)

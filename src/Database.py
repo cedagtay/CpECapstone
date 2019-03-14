@@ -64,6 +64,7 @@ class Database():
         return result
 
     def retrieve_name(self, student_id):
+        print(student_id)
         student_name = select([self.students.c.name]).where(self.students.c.id == student_id)
         conn = self.engine.connect()
         result = conn.execute(student_name).fetchone()
